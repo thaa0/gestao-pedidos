@@ -1,4 +1,4 @@
-package br.model;
+package br.com.heveraldo.gestao_pedidos.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

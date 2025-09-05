@@ -1,4 +1,4 @@
-package br.model;
+package br.com.heveraldo.gestao_pedidos.model;
 
 public enum StatusPedido {
     AGUARDANDO_PROCESSAMENTO,
