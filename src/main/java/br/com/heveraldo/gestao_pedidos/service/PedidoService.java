@@ -1,5 +1,6 @@
 package br.com.heveraldo.gestao_pedidos.service;
 
+
 import br.com.heveraldo.gestao_pedidos.dto.ItemPedidoRequestDTO;
 import br.com.heveraldo.gestao_pedidos.dto.PedidoRequestDTO;
 import br.com.heveraldo.gestao_pedidos.model.*;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 @Service
 public class PedidoService {
@@ -33,6 +35,9 @@ public class PedidoService {
         novoPedido.setCliente(cliente);
         novoPedido.setDataCriacao(LocalDateTime.now());
         novoPedido.setStatus(StatusPedido.AGUARDANDO_PROCESSAMENTO);
+
+        novoPedido.setTipoPagamento("BOLETO_15_DIAS");
+    novoPedido.setDataVencimento(LocalDate.now().plusDays(15));
 
         double valorTotalCalculado = 0.0;
         List<ItemPedido> itensDoPedido = new ArrayList<>();

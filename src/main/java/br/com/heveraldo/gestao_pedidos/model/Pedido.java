@@ -1,6 +1,7 @@
 package br.com.heveraldo.gestao_pedidos.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,59 +28,50 @@ public class Pedido {
 
     private double valorTotal;
 
-    public Long getId() {
-        return id;
-    }
+    private String tipoPagamento;
+    private LocalDate dataVencimento;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @ManyToOne
+    @JoinColumn(name = "rota_id")
+    private Rota rota;
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+    public Long getId() { return id; }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
+    public void setId(Long id) { this.id = id; }
 
-    public List<ItemPedido> getItens() {
-        return itens;
-    }
+    public Cliente getCliente() { return cliente; }
 
-    public void setItens(List<ItemPedido> itens) {
-        this.itens = itens;
-    }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
+    public List<ItemPedido> getItens() { return itens; }
 
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
+    public void setItens(List<ItemPedido> itens) { this.itens = itens; }
 
-    public LocalDateTime getDataProcessamento() {
-        return dataProcessamento;
-    }
+    public LocalDateTime getDataCriacao() { return dataCriacao; }
 
-    public void setDataProcessamento(LocalDateTime dataProcessamento) {
-        this.dataProcessamento = dataProcessamento;
-    }
+    public void setDataCriacao(LocalDateTime dataCriacao) { this.dataCriacao = dataCriacao; }
 
-    public StatusPedido getStatus() {
-        return status;
-    }
+    public LocalDateTime getDataProcessamento() { return dataProcessamento; }
+    
+    public void setDataProcessamento(LocalDateTime dataProcessamento) { this.dataProcessamento = dataProcessamento; }
 
-    public void setStatus(StatusPedido status) {
-        this.status = status;
-    }
+    public StatusPedido getStatus() { return status; }
 
-    public double getValorTotal() {
-        return valorTotal;
-    }
+    public void setStatus(StatusPedido status) { this.status = status; }
 
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
+    public double getValorTotal() { return valorTotal; }
+
+    public void setValorTotal(double valorTotal) { this.valorTotal = valorTotal; }
+
+    public Rota getRota() { return rota; }
+
+    public void setRota(Rota rota) { this.rota = rota; }
+
+    public String getTipoPagamento() { return tipoPagamento; }
+
+    public void setTipoPagamento(String tipoPagamento) { this.tipoPagamento = tipoPagamento; }
+
+    public LocalDate getDataVencimento() { return dataVencimento; }
+
+    public void setDataVencimento(LocalDate dataVencimento) { this.dataVencimento = dataVencimento; }
 }
