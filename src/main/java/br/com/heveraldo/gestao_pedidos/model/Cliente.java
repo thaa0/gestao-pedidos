@@ -12,6 +12,11 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String logradouro;
+    private String numero;
+    private String cidade;
+    private String cep;
+
     private String razaoSocial; 
     private String cnpj;        
     private String endereco;
