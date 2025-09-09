@@ -1,10 +1,8 @@
 package br.com.heveraldo.gestao_pedidos.service;
 
-import br.com.heveraldo.gestao_pedidos.model.Caminhao;
-import br.com.heveraldo.gestao_pedidos.model.Pedido;
-import br.com.heveraldo.gestao_pedidos.model.Rota;
-import br.com.heveraldo.gestao_pedidos.model.StatusPedido;
+import br.com.heveraldo.gestao_pedidos.model.*; 
 import br.com.heveraldo.gestao_pedidos.repository.CaminhaoRepository;
+import br.com.heveraldo.gestao_pedidos.repository.MotoristaRepository;
 import br.com.heveraldo.gestao_pedidos.repository.PedidoRepository;
 import br.com.heveraldo.gestao_pedidos.repository.RotaRepository;
 import org.slf4j.Logger;
@@ -26,15 +24,15 @@ public class ProcessamentoLoteService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
-
     @Autowired
-    private CaminhaoRepository caminhaoRepository; 
-
+    private CaminhaoRepository caminhaoRepository;
     @Autowired
-    private RotaRepository rotaRepository; 
+    private RotaRepository rotaRepository;
+    @Autowired
+    private MotoristaRepository motoristaRepository; 
 
-    @Scheduled(cron = "0 * * * * *") // Roda a cada minuto para testes
-    @Transactional 
+    @Scheduled(cron = "0 * * * * *")
+    @Transactional
     public void processarPedidosPendentes() {
         log.info("--- INICIANDO ROTINA DE PROCESSAMENTO E DISTRIBUIÇÃO ---");
 
@@ -44,36 +42,43 @@ public class ProcessamentoLoteService {
             log.info("Nenhum pedido pendente encontrado.");
             return;
         }
-
         log.info(">>> {} pedidos encontrados para processamento.", pedidosPendentes.size());
 
-        Optional<Caminhao> caminhaoDisponivelOpt = caminhaoRepository.findFirstByDisponivelTrue();
-
-        if (caminhaoDisponivelOpt.isEmpty()) {
-            log.warn("Nenhum caminhão disponível para criar a rota. Pedidos permanecerão pendentes.");
+        Optional<Caminhao> caminhaoOpt = caminhaoRepository.findFirstByDisponivelTrue();
+        if (caminhaoOpt.isEmpty()) {
+            log.warn("Nenhum caminhão disponível. Pedidos permanecerão pendentes.");
             return;
         }
 
-        Caminhao caminhao = caminhaoDisponivelOpt.get();
-        log.info("Caminhão {} (placa: {}) selecionado para a rota.", caminhao.getMotorista(), caminhao.getPlaca());
+        Optional<Motorista> motoristaOpt = motoristaRepository.findFirstByDisponivelTrue();
+        if (motoristaOpt.isEmpty()) {
+            log.warn("Nenhum motorista disponível. Pedidos permanecerão pendentes.");
+            return;
+        }
+
+        Caminhao caminhao = caminhaoOpt.get();
+        Motorista motorista = motoristaOpt.get();
+        log.info("Caminhão {} e Motorista {} selecionados para a rota.", caminhao.getPlaca(), motorista.getNome());
 
         Rota novaRota = new Rota();
         novaRota.setCaminhao(caminhao);
+        novaRota.setMotorista(motorista); 
         novaRota.setDataRota(LocalDate.now());
         novaRota.setStatus("PLANEJADA");
         rotaRepository.save(novaRota);
 
         for (Pedido pedido : pedidosPendentes) {
-            pedido.setStatus(StatusPedido.EM_ROTA_DE_ENTREGA); 
+            pedido.setStatus(StatusPedido.EM_ROTA_DE_ENTREGA);
             pedido.setDataProcessamento(LocalDateTime.now());
-            pedido.setRota(novaRota); 
+            pedido.setRota(novaRota);
             pedidoRepository.save(pedido);
             log.info("Pedido ID {} alocado para a Rota ID {}.", pedido.getId(), novaRota.getId());
         }
 
-        
         caminhao.setDisponivel(false);
+        motorista.setDisponivel(false);
         caminhaoRepository.save(caminhao);
+        motoristaRepository.save(motorista);
 
         log.info("--- DISTRIBUIÇÃO CONCLUÍDA. Rota ID {} criada. ---", novaRota.getId());
     }

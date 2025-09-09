@@ -16,11 +16,15 @@ public class Rota {
     @JoinColumn(name = "caminhao_id", nullable = false)
     private Caminhao caminhao;
 
+    @ManyToOne
+    @JoinColumn(name = "motorista_id", nullable = false)
+    private Motorista motorista;
+
     @OneToMany(mappedBy = "rota")
     private List<Pedido> pedidos = new ArrayList<>();
 
     private LocalDate dataRota;
-    private String status;
+    private String status; 
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -32,4 +36,7 @@ public class Rota {
     public void setDataRota(LocalDate dataRota) { this.dataRota = dataRota; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public Motorista getMotorista() { return motorista; }
+    public void setMotorista(Motorista motorista) { this.motorista = motorista; }
 }
