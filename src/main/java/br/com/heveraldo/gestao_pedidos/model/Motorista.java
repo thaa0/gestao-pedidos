@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Motorista {
@@ -15,6 +17,9 @@ public class Motorista {
     private String nome;
     private String cnh; 
     private boolean disponivel = true;
+
+    @ManyToOne
+    @JoinColumn(name = "cd_id", nullable = false) 
     private CentroDistribuicao centroDistribuicao;
     
     public Long getId() { 

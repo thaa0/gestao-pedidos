@@ -25,13 +25,13 @@ public class Cliente {
     private String cep;
 
     @ManyToOne
-    @JoinColumn(name = "cd_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "cd_id") 
     private CentroDistribuicao centroDistribuicao;
 
     public Long getId() { 
         return id; }
-        
+
     public void setId(Long id) { 
         this.id = id; }
 
@@ -70,4 +70,10 @@ public class Cliente {
 
     public void setCep(String cep) { 
         this.cep = cep; }
+
+    public CentroDistribuicao getCentroDistribuicao() { 
+        return centroDistribuicao; }
+
+    public void setCentroDistribuicao(CentroDistribuicao centroDistribuicao) { 
+        this.centroDistribuicao = centroDistribuicao; }
 }
