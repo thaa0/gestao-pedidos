@@ -13,6 +13,9 @@ public class CentroDistribuicao {
     private Long id;
 
     private String nome;
+    private String logradouro;
+    private String numero;     
+    private String bairro;
     private String cidade;
     private String estado;
     private String cep;
