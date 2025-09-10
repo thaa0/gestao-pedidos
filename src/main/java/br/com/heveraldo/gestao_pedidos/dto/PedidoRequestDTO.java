@@ -1,8 +1,10 @@
 package br.com.heveraldo.gestao_pedidos.dto;
 
+import java.util.List;
+
 public class PedidoRequestDTO {
     private Long clienteId;
-    private ItemPedidoRequestDTO[] itens;
+    private List<ItemPedidoRequestDTO> itens;
 
     public Long getClienteId() {
         return clienteId;
@@ -12,11 +14,11 @@ public class PedidoRequestDTO {
         this.clienteId = clienteId;
     }
 
-    public ItemPedidoRequestDTO[] getItens() {
+    public List<ItemPedidoRequestDTO> getItens() {
         return itens;
     }
 
-    public void setItens(ItemPedidoRequestDTO[] itens) {
+    public void setItens(List<ItemPedidoRequestDTO> itens) {
         this.itens = itens;
     }
 }

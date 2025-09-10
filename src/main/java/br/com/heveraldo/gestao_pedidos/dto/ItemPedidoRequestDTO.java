@@ -3,7 +3,7 @@ package br.com.heveraldo.gestao_pedidos.dto;
 public class ItemPedidoRequestDTO {
     private Long produtoId;
     private int quantidade;
-
+    
     public Long getProdutoId() {
         return produtoId;
     }

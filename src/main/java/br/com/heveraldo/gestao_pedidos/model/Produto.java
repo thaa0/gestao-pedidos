@@ -15,55 +15,49 @@ public class Produto {
     private String nome;
     private String sku;
     private double preco;
-    private int estoque;
 
     private double pesoKg;
     private double volumeM3;
-    
     private int unidadesPorPalete;
     private double pesoPorPaleteKg;
     private double volumePorPaleteM3;
 
+    public Long getId() { 
+        return id; }
 
-    public Long getId() {
-        return id;
-    }
+    public void setId(Long id) { 
+        this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getNome() { 
+        return nome; }
 
-    public String getNome() {
-        return nome;
-    }
+    public void setNome(String nome) { 
+        this.nome = nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public String getSku() { 
+        return sku; }
 
-    public String getSku() {
-        return sku;
-    }
+    public void setSku(String sku) { 
+        this.sku = sku; }
 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
+    public double getPreco() { 
+        return preco; }
 
-    public double getPreco() {
-        return preco;
-    }
+    public void setPreco(double preco) { 
+        this.preco = preco; }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
+    public double getPesoKg() { 
+        return pesoKg; }
 
-    public int getEstoque() {
-        return estoque;
-    }
+    public void setPesoKg(double pesoKg) { 
+        this.pesoKg = pesoKg; }
 
-    public void setEstoque(int estoque) {
-        this.estoque = estoque;
-    }
+    public double getVolumeM3() { 
+        return volumeM3; }
+
+    public void setVolumeM3(double volumeM3) { 
+        this.volumeM3 = volumeM3; }
+
     public int getUnidadesPorPalete() { 
         return unidadesPorPalete; }
 
@@ -81,16 +75,4 @@ public class Produto {
 
     public void setVolumePorPaleteM3(double volumePorPaleteM3) { 
         this.volumePorPaleteM3 = volumePorPaleteM3; }
-
-    public double getPesoKg() { 
-        return pesoKg; }
-        
-    public void setPesoKg(double pesoKg) { 
-        this.pesoKg = pesoKg; }
-
-    public double getVolumeM3() { 
-        return volumeM3; }
-
-    public void setVolumeM3(double volumeM3) { 
-        this.volumeM3 = volumeM3; }
 }

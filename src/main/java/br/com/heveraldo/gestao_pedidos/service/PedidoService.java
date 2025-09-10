@@ -1,20 +1,21 @@
 package br.com.heveraldo.gestao_pedidos.service;
 
-
 import br.com.heveraldo.gestao_pedidos.dto.ItemPedidoRequestDTO;
 import br.com.heveraldo.gestao_pedidos.dto.PedidoRequestDTO;
 import br.com.heveraldo.gestao_pedidos.model.*;
 import br.com.heveraldo.gestao_pedidos.repository.ClienteRepository;
+import br.com.heveraldo.gestao_pedidos.repository.EstoqueRepository; 
 import br.com.heveraldo.gestao_pedidos.repository.PedidoRepository;
 import br.com.heveraldo.gestao_pedidos.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
+import java.util.Optional; 
 
 @Service
 public class PedidoService {
@@ -25,34 +26,38 @@ public class PedidoService {
     private ClienteRepository clienteRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private EstoqueRepository estoqueRepository;
 
     @Transactional
     public Pedido criarPedido(PedidoRequestDTO pedidoRequestDTO) {
         Cliente cliente = clienteRepository.findById(pedidoRequestDTO.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado com ID: " + pedidoRequestDTO.getClienteId()));
+        CentroDistribuicao cd = cliente.getCentroDistribuicao();
 
         Pedido novoPedido = new Pedido();
         novoPedido.setCliente(cliente);
         novoPedido.setDataCriacao(LocalDateTime.now());
         novoPedido.setStatus(StatusPedido.AGUARDANDO_PROCESSAMENTO);
-
         novoPedido.setTipoPagamento("BOLETO_15_DIAS");
-    novoPedido.setDataVencimento(LocalDate.now().plusDays(15));
+        novoPedido.setDataVencimento(LocalDate.now().plusDays(15));
 
         double valorTotalCalculado = 0.0;
         List<ItemPedido> itensDoPedido = new ArrayList<>();
 
-        // Processamento de cada item do pedido
         for (ItemPedidoRequestDTO itemDTO : pedidoRequestDTO.getItens()) {
             Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
                     .orElseThrow(() -> new RuntimeException("Produto não encontrado com ID: " + itemDTO.getProdutoId()));
 
-            if (produto.getEstoque() < itemDTO.getQuantidade()) {
-                throw new RuntimeException("Estoque insuficiente para o produto: " + produto.getNome());
+            Estoque estoqueDoProdutoNoCD = estoqueRepository.findByProdutoAndCentroDistribuicao(produto, cd)
+                    .orElseThrow(() -> new RuntimeException("Estoque não encontrado para o produto " + produto.getNome() + " no CD " + cd.getNome()));
+
+            if (estoqueDoProdutoNoCD.getQuantidade() < itemDTO.getQuantidade()) {
+                throw new RuntimeException("Estoque insuficiente para o produto: " + produto.getNome() + ". Disponível: " + estoqueDoProdutoNoCD.getQuantidade());
             }
 
-            produto.setEstoque(produto.getEstoque() - itemDTO.getQuantidade());
-            produtoRepository.save(produto); 
+            estoqueDoProdutoNoCD.setQuantidade(estoqueDoProdutoNoCD.getQuantidade() - itemDTO.getQuantidade());
+            estoqueRepository.save(estoqueDoProdutoNoCD);
 
             ItemPedido itemPedido = new ItemPedido();
             itemPedido.setPedido(novoPedido);
@@ -61,7 +66,6 @@ public class PedidoService {
             itemPedido.setPrecoUnitario(produto.getPreco());
             
             itensDoPedido.add(itemPedido);
-
             valorTotalCalculado += (itemDTO.getQuantidade() * produto.getPreco());
         }
 
@@ -71,4 +75,3 @@ public class PedidoService {
         return pedidoRepository.save(novoPedido);
     }
 }
-
