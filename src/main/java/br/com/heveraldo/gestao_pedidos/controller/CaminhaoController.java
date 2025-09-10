@@ -1,7 +1,10 @@
 package br.com.heveraldo.gestao_pedidos.controller;
 
+import br.com.heveraldo.gestao_pedidos.dto.CaminhaoRequestDTO;
 import br.com.heveraldo.gestao_pedidos.model.Caminhao;
 import br.com.heveraldo.gestao_pedidos.repository.CaminhaoRepository;
+import br.com.heveraldo.gestao_pedidos.service.CaminhaoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +15,14 @@ import java.util.List;
 public class CaminhaoController {
 
     @Autowired
+    private CaminhaoService caminhaoService;
+
+    @Autowired
     private CaminhaoRepository caminhaoRepository;
 
     @PostMapping
-    public Caminhao criarCaminhao(@RequestBody Caminhao caminhao) {
-        return caminhaoRepository.save(caminhao);
+    public Caminhao criarCaminhao(@RequestBody CaminhaoRequestDTO caminhaoRequestDTO) {
+        return caminhaoService.criarCaminhao(caminhaoRequestDTO);
     }
 
     @GetMapping

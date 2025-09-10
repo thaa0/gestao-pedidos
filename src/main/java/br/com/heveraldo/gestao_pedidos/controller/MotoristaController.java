@@ -1,7 +1,10 @@
 package br.com.heveraldo.gestao_pedidos.controller;
 
+import br.com.heveraldo.gestao_pedidos.dto.MotoristaRequestDTO;
 import br.com.heveraldo.gestao_pedidos.model.Motorista;
 import br.com.heveraldo.gestao_pedidos.repository.MotoristaRepository;
+import br.com.heveraldo.gestao_pedidos.service.MotoristaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +15,14 @@ import java.util.List;
 public class MotoristaController {
 
     @Autowired
+    private MotoristaService motoristaService;
+
+    @Autowired
     private MotoristaRepository motoristaRepository;
 
     @PostMapping
-    public Motorista criarMotorista(@RequestBody Motorista motorista) {
-        return motoristaRepository.save(motorista);
+    public Motorista criarMotorista(@RequestBody MotoristaRequestDTO motoristaRequestDTO) {
+        return motoristaService.criarMotorista(motoristaRequestDTO);
     }
 
     @GetMapping
