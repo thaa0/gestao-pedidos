@@ -15,14 +15,36 @@ public class Motorista {
     private String nome;
     private String cnh; 
     private boolean disponivel = true;
-
+    private CentroDistribuicao centroDistribuicao;
     
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getCnh() { return cnh; }
-    public void setCnh(String cnh) { this.cnh = cnh; }
-    public boolean isDisponivel() { return disponivel; }
-    public void setDisponivel(boolean disponivel) { this.disponivel = disponivel; }
+    public Long getId() { 
+        return id; }
+
+    public void setId(Long id) { 
+        this.id = id; }
+
+    public String getNome() { 
+        return nome; }
+
+    public void setNome(String nome) { 
+        this.nome = nome; }
+
+    public String getCnh() { 
+        return cnh; }
+
+    public void setCnh(String cnh) { 
+        this.cnh = cnh; }
+
+    public boolean isDisponivel() { 
+        return disponivel; }
+        
+    public void setDisponivel(boolean disponivel) { 
+        this.disponivel = disponivel; }
+
+    public CentroDistribuicao getCentroDistribuicao() { 
+        return centroDistribuicao; }
+
+    public void setCentroDistribuicao(CentroDistribuicao centroDistribuicao) { 
+        this.centroDistribuicao = centroDistribuicao; }
+
 }
