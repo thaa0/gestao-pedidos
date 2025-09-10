@@ -13,15 +13,21 @@ public class Caminhao {
     private Long id;
 
     private String placa;
+    private boolean disponivel = true;
     
-    private boolean disponivel = true; 
+    // Campos de capacidade
+    private double capacidadePesoKg;
+    private double capacidadeVolumeM3;
 
+    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getPlaca() { return placa; }
     public void setPlaca(String placa) { this.placa = placa; }
-   
-    
     public boolean isDisponivel() { return disponivel; }
     public void setDisponivel(boolean disponivel) { this.disponivel = disponivel; }
+    public double getCapacidadePesoKg() { return capacidadePesoKg; }
+    public void setCapacidadePesoKg(double capacidadePesoKg) { this.capacidadePesoKg = capacidadePesoKg; }
+    public double getCapacidadeVolumeM3() { return capacidadeVolumeM3; }
+    public void setCapacidadeVolumeM3(double capacidadeVolumeM3) { this.capacidadeVolumeM3 = capacidadeVolumeM3; }
 }
