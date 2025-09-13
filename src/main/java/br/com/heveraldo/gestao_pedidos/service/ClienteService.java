@@ -3,6 +3,7 @@ package br.com.heveraldo.gestao_pedidos.service;
 import br.com.heveraldo.gestao_pedidos.dto.ClienteRequestDTO;
 import br.com.heveraldo.gestao_pedidos.model.CentroDistribuicao;
 import br.com.heveraldo.gestao_pedidos.model.Cliente;
+import br.com.heveraldo.gestao_pedidos.model.Endereco;
 import br.com.heveraldo.gestao_pedidos.repository.CentroDistribuicaoRepository;
 import br.com.heveraldo.gestao_pedidos.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,11 @@ public class ClienteService {
         CentroDistribuicao cd = cdRepository.findById(dto.getCentroDistribuicaoId())
                 .orElseThrow(() -> new RuntimeException("Centro de Distribuição não encontrado"));
 
+        Endereco endereco = new Endereco(dto.getLogradouro(), dto.getNumero(), dto.getBairro(), dto.getCidade(),"", dto.getCep());
         Cliente novoCliente = new Cliente();
         novoCliente.setRazaoSocial(dto.getRazaoSocial());
         novoCliente.setCnpj(dto.getCnpj());
-        novoCliente.setLogradouro(dto.getLogradouro());
-        novoCliente.setNumero(dto.getNumero());
-        novoCliente.setCidade(dto.getCidade());
-        novoCliente.setCep(dto.getCep());
+        novoCliente.setEndereco(endereco);
         novoCliente.setCentroDistribuicao(cd);
 
         return clienteRepository.save(novoCliente);
