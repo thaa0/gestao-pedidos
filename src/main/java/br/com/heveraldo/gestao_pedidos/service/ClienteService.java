@@ -22,7 +22,7 @@ public class ClienteService {
 
     public Cliente criarCliente(ClienteRequestDTO dto) {
         CentroDistribuicao centroDistribuicao = getCentroDistribuicao(dto);
-        Endereco endereco = buscaEnderecoPeloCep(dto.getCep());
+        Endereco endereco = buscaEnderecoPeloCep(dto);
         Cliente novoCliente = new Cliente(dto, endereco, centroDistribuicao);
         return clienteRepository.save(novoCliente);
     }
@@ -32,8 +32,8 @@ public class ClienteService {
                 .orElseThrow(() -> new RuntimeException("Centro de Distribuição não encontrado"));
     }
 
-    private Endereco buscaEnderecoPeloCep(String cep) {
-        ViaCepClientRespose enderecoResponse = viaCepClient.consultaCep(cep);
-        return new Endereco(enderecoResponse);
+    private Endereco buscaEnderecoPeloCep(ClienteRequestDTO dto) {
+        ViaCepClientRespose enderecoResponse = viaCepClient.consultaCep(dto.getCep());
+        return new Endereco(enderecoResponse, dto.getNumero());
     }
 }

@@ -20,11 +20,12 @@ public class Endereco {
 
     }
 
-    public Endereco(ViaCepClientRespose enderecoResponse) {
+    public Endereco(ViaCepClientRespose enderecoResponse, String numero) {
         this.estado = enderecoResponse.getState();
         this.cidade = enderecoResponse.getCity();
         this.bairro = enderecoResponse.getNeighborhood();
         this.logradouro = enderecoResponse.getStreet();
+        this.numero = numero;
         this.cep = enderecoResponse.getCep();
     }
 }
